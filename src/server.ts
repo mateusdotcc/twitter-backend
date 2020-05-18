@@ -20,6 +20,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/files', express.static(resolve(__dirname, '..', 'tmp', 'uploads')));
 app.use(routes);
 
-app.listen(3333, () => {
+app.listen(process.env.PORT || 3333, () => {
   console.log('🚀 Server started on port http://localhost:3333');
 });
