@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "tsc-transpile-only",
+    "build": "tsc",
     "dev:server": "ts-node-dev --inspect --transpileOnly --ignore-watch node_modules src/server.ts"
   },
   "dependencies": {
@@ -16,7 +16,6 @@
     "mongoose": "^5.9.13",
     "multer": "^1.4.2",
     "multer-s3": "^2.9.0",
-    "typescript-transpile-only": "^0.0.4",
     "uuidv4": "^6.0.8"
   },
   "devDependencies": {
@@ -25,6 +24,7 @@
     "@types/mongoose": "^5.7.16",
     "@types/multer": "^1.4.3",
     "@types/multer-s3": "^2.7.7",
+    "@types/node": "^14.0.4",
     "@typescript-eslint/eslint-plugin": "^2.31.0",
     "@typescript-eslint/parser": "^2.31.1-alpha.23",
     "eslint": "^7.0.0",

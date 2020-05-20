@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import axios from 'axios';
 
 import User from '../models/User';
-import File, { IFile } from '../models/File';
+// import File, { IFile } from '../models/File';
 
 class UserController {
   public async index(req: Request, res: Response) {
@@ -37,45 +37,45 @@ class UserController {
       location: country,
     } = response.data;
 
-    let userAvatar: IFile = undefined;
-    let userCover: IFile = undefined;
+    // let userAvatar: any = {};
+    // let userCover: any = {};
 
-    if (req.files) {
-      const {
-        originalname: avatarName,
-        size: avatarSize,
-        key: avatarKey,
-        location: avatarUrl = '',
-      } = req.files[0];
+    // if (Object.keys(req.files).length > 0) {
+    //   const {
+    //     originalname: avatarName,
+    //     size: avatarSize,
+    //     key: avatarKey,
+    //     location: avatarUrl = '',
+    //   } = req.files['avatar'];
 
-      userAvatar = await File.create({
-        name: avatarName,
-        size: avatarSize,
-        key: avatarKey,
-        url: avatarUrl,
-      });
+    //   userAvatar = await File.create({
+    //     name: avatarName,
+    //     size: avatarSize,
+    //     key: avatarKey,
+    //     url: avatarUrl,
+    //   });
 
-      const {
-        originalname: coverName,
-        size: coverSize,
-        key: coverKey,
-        location: coverUrl = '',
-      } = req.files[1];
+    //   const {
+    //     originalname: coverName,
+    //     size: coverSize,
+    //     key: coverKey,
+    //     location: coverUrl = '',
+    //   } = req.files[1];
 
-      userCover = await File.create({
-        name: coverName,
-        size: coverSize,
-        key: coverKey,
-        url: coverUrl,
-      });
-    }
+    //   userCover = await File.create({
+    //     name: coverName,
+    //     size: coverSize,
+    //     key: coverKey,
+    //     url: coverUrl,
+    //   });
+    // }
 
     const user = await User.create({
       name,
       user: username,
       bio,
-      avatar: userAvatar ? userAvatar.url : avatar_url,
-      cover: userCover ? userCover.url : '',
+      // avatar: userAvatar ? userAvatar.url : avatar_url,
+      // cover: userCover ? userCover.url : '',
       company,
       country,
       followers,
@@ -96,30 +96,30 @@ class UserController {
       return res.status(400).json({ error: 'User not found' });
     }
 
-    let userAvatar: IFile = undefined;
-    let userCover: IFile = undefined;
+    // let userAvatar: any = {};
+    // let userCover: any = {};
 
-    if (Object.keys(req.files).length > 0) {
-      const {
-        originalname: coverName,
-        size: coverSize,
-        key: coverKey,
-        location: coverUrl = '',
-      } = req.files[1];
+    // if (Object.keys(req.files).length > 0) {
+    //   const {
+    //     originalname: coverName,
+    //     size: coverSize,
+    //     key: coverKey,
+    //     location: coverUrl = '',
+    //   } = req.files[1];
 
-      userCover = await File.create({
-        name: coverName,
-        size: coverSize,
-        key: coverKey,
-        url: coverUrl,
-      });
-    }
+    //   userCover = await File.create({
+    //     name: coverName,
+    //     size: coverSize,
+    //     key: coverKey,
+    //     url: coverUrl,
+    //   });
+    // }
 
     if (name) loggedUser.name = name;
 
-    if (userAvatar) loggedUser.avatar = userAvatar.url;
+    // if (userAvatar) loggedUser.avatar = userAvatar.url;
 
-    if (userCover) loggedUser.cover = userCover.url;
+    // if (userCover) loggedUser.cover = userCover.url;
 
     await loggedUser.save();
 

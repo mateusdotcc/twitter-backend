@@ -6,15 +6,13 @@ import { resolve } from 'path';
 
 const storageTypes = {
   local: multer.diskStorage({
-    destination: (req, file, cb) => {
+    destination: (req: Express.Request, file: Express.Multer.File, cb) => {
       cb(null, resolve(__dirname, '..', '..', 'tmp', 'uploads'));
     },
-    filename: (req, file, cb) => {
+    filename: (req: Express.Request, file: Express.MulterS3.File, cb) => {
       crypto.randomBytes(16, (err, hash) => {
-        if (err) cb(err, null);
-
+        if (err) cb(err, '');
         file.key = `${hash.toString('hex')}-${file.originalname}`;
-
         cb(null, file.key);
       });
     },
@@ -26,7 +24,7 @@ const storageTypes = {
     acl: 'public-read',
     key: (req, file, cb) => {
       crypto.randomBytes(16, (err, hash) => {
-        if (err) cb(err, null);
+        if (err) cb(err, '');
 
         const fileName = `${hash.toString('hex')}-${file.originalname}`;
 
@@ -38,17 +36,20 @@ const storageTypes = {
 
 export default {
   dest: resolve(__dirname, '..', '..', 'tmp', 'uploads'),
-  storage: storageTypes[process.env.STORAGE_TYPE],
+  storage:
+    process.env.NODE_ENV === 'development'
+      ? storageTypes['local']
+      : storageTypes['s3'],
   limits: {
     fileSize: 2 * 1024 * 1024,
   },
-  fileFilter: (req, file, cb) => {
+  fileFilter: (req: Express.Request, file: Express.MulterS3.File, cb: any) => {
     const allowedMimes = ['image/jpeg', 'image/pjeg', 'image/png', 'image/gif'];
 
     if (allowedMimes.includes(file.mimetype)) {
-      cb(null, true);
+      cb(null, '');
     } else {
-      cb(new Error('Invalid file type'));
+      cb(new Error('Invalid file type'), '');
     }
   },
 };
