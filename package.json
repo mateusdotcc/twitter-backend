@@ -4,8 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "postinstall": "tsc --sourceMap false",
-    "build": "node dist/main.js",
+    "build": "ts-node src/server.ts",
     "dev:server": "ts-node-dev --inspect --transpileOnly --ignore-watch node_modules src/server.ts"
   },
   "dependencies": {
@@ -17,6 +16,7 @@
     "mongoose": "^5.9.13",
     "multer": "^1.4.2",
     "multer-s3": "^2.9.0",
+    "ts-node": "^8.10.1",
     "uuidv4": "^6.0.8"
   },
   "devDependencies": {
