@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc src/server.ts",
+    "postinstall": "yarn build",
     "dev:server": "ts-node-dev --inspect --transpileOnly --ignore-watch node_modules src/server.ts"
   },
   "dependencies": {
