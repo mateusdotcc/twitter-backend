@@ -47,7 +47,7 @@ export default {
     const allowedMimes = ['image/jpeg', 'image/pjeg', 'image/png', 'image/gif'];
 
     if (allowedMimes.includes(file.mimetype)) {
-      cb(null, '');
+      cb(null, true);
     } else {
       cb(new Error('Invalid file type'), '');
     }

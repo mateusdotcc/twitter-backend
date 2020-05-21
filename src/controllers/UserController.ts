@@ -74,7 +74,7 @@ class UserController {
       name,
       user: username,
       bio,
-      // avatar: userAvatar ? userAvatar.url : avatar_url,
+      avatar: avatar_url,
       // cover: userCover ? userCover.url : '',
       company,
       country,
