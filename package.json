@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "node dist/server.js",
-    "build": "rimraf dist && npm run tsc",
+    "build": "rimraf dist && yarn tsc",
+    "postinstall": "npm run build",
     "dev:server": "ts-node-dev --inspect --transpileOnly --ignore-watch node_modules src/server.ts"
   },
   "dependencies": {
