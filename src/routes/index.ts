@@ -9,11 +9,7 @@ const routes = Router();
 
 routes.get('/users/:id', UserController.index);
 
-routes.post(
-  '/users',
-  multer(MulterConfig).array('file', 2),
-  UserController.store,
-);
+routes.post('/users', UserController.store);
 routes.put(
   '/users/:id',
   multer(MulterConfig).array('file', 2),

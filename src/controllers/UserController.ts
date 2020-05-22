@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
 
-import User from '../models/User';
+import User, { IUser } from '../models/User';
 // import File, { IFile } from '../models/File';
 
 class UserController {
@@ -22,65 +22,36 @@ class UserController {
       return res.json(userExists);
     }
 
-    const response = await axios.get(
-      `https://api.github.com/users/${username}`,
-    );
+    const [response, responseCover] = await Promise.all([
+      await axios.get(`https://api.github.com/users/${username}`),
+      await axios.get('https://picsum.photos/v2/list?page=1&limit=1'),
+    ]);
 
     const {
       name,
       bio,
-      avatar_url,
       company,
       followers,
       following,
       html_url,
+      login: nickname,
+      avatar_url: avatar,
       location: country,
     } = response.data;
 
-    // let userAvatar: any = {};
-    // let userCover: any = {};
-
-    // if (Object.keys(req.files).length > 0) {
-    //   const {
-    //     originalname: avatarName,
-    //     size: avatarSize,
-    //     key: avatarKey,
-    //     location: avatarUrl = '',
-    //   } = req.files['avatar'];
-
-    //   userAvatar = await File.create({
-    //     name: avatarName,
-    //     size: avatarSize,
-    //     key: avatarKey,
-    //     url: avatarUrl,
-    //   });
-
-    //   const {
-    //     originalname: coverName,
-    //     size: coverSize,
-    //     key: coverKey,
-    //     location: coverUrl = '',
-    //   } = req.files[1];
-
-    //   userCover = await File.create({
-    //     name: coverName,
-    //     size: coverSize,
-    //     key: coverKey,
-    //     url: coverUrl,
-    //   });
-    // }
+    const { download_url: cover } = responseCover.data[0];
 
     const user = await User.create({
       name,
-      user: username,
       bio,
-      avatar: avatar_url,
-      // cover: userCover ? userCover.url : '',
+      avatar,
+      cover,
       company,
       country,
       followers,
       following,
       html_url,
+      user: nickname,
     });
 
     return res.json(user);

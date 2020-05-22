@@ -4,14 +4,14 @@ export interface IUser extends Document {
   name: string;
   user: string;
   avatar: string;
-  avatar_url: string;
   cover: string;
-  tweets: string[];
-  company: string;
   country: string;
   followers: number;
   following: number;
   html_url: string;
+  tweets?: string[];
+  company?: string;
+  bio?: string;
 }
 
 const UserSchema = new Schema(
@@ -24,23 +24,38 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
-    bio: String,
     avatar: {
       type: String,
       required: true,
     },
-    avatar_url: String,
-    cover: String,
-    company: String,
-    followers: Number,
-    following: Number,
-    html_url: String,
+    cover: {
+      type: String,
+      required: true,
+    },
+    followers: {
+      type: Number,
+      required: true,
+    },
+    following: {
+      type: Number,
+      required: true,
+    },
+    html_url: {
+      type: String,
+      required: true,
+    },
+    country: {
+      type: String,
+      required: true,
+    },
     tweets: [
       {
         type: Schema.Types.String,
         ref: 'User',
       },
     ],
+    bio: String,
+    company: String,
   },
   {
     timestamps: true,
