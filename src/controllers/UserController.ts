@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import axios from 'axios';
 
-import User, { IUser } from '../models/User';
-// import File, { IFile } from '../models/File';
+import User from '../models/User';
+import File, { IFile } from '../models/File';
 
 class UserController {
   public async index(req: Request, res: Response) {
@@ -67,30 +67,40 @@ class UserController {
       return res.status(400).json({ error: 'User not found' });
     }
 
-    // let userAvatar: any = {};
-    // let userCover: any = {};
+    let userAvatar: any | IFile;
+    let userCover: any | IFile;
 
-    // if (Object.keys(req.files).length > 0) {
-    //   const {
-    //     originalname: coverName,
-    //     size: coverSize,
-    //     key: coverKey,
-    //     location: coverUrl = '',
-    //   } = req.files[1];
+    if (Object.keys(req.files).length > 0) {
+      let files: any | Express.Multer.File = req.files;
 
-    //   userCover = await File.create({
-    //     name: coverName,
-    //     size: coverSize,
-    //     key: coverKey,
-    //     url: coverUrl,
-    //   });
-    // }
+      if (files[0] && files[0].fieldname === 'avatar') {
+        const { originalname: name, size, key, location: url = '' } = files[0];
+
+        userAvatar = await File.create({
+          name,
+          size,
+          key,
+          url,
+        });
+      }
+
+      if (files[1] && files[1].fieldname === 'cover') {
+        const { originalname: name, size, key, location: url = '' } = files[1];
+
+        userCover = await File.create({
+          name,
+          size,
+          key,
+          url,
+        });
+      }
+    }
 
     if (name) loggedUser.name = name;
 
-    // if (userAvatar) loggedUser.avatar = userAvatar.url;
+    loggedUser.avatar = userAvatar.url;
 
-    // if (userCover) loggedUser.cover = userCover.url;
+    loggedUser.cover = userCover.url;
 
     await loggedUser.save();
 

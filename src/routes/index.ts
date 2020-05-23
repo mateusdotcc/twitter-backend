@@ -10,11 +10,7 @@ const routes = Router();
 routes.get('/users/:id', UserController.index);
 
 routes.post('/users', UserController.store);
-routes.put(
-  '/users/:id',
-  multer(MulterConfig).array('file', 2),
-  UserController.update,
-);
+routes.put('/users/:id', multer(MulterConfig).any(), UserController.update);
 
 routes.post('/users/:id/tweet', TweetController.store);
 

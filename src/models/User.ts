@@ -24,14 +24,6 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
-    avatar: {
-      type: String,
-      required: true,
-    },
-    cover: {
-      type: String,
-      required: true,
-    },
     followers: {
       type: Number,
       required: true,
@@ -56,6 +48,8 @@ const UserSchema = new Schema(
     ],
     bio: String,
     company: String,
+    avatar: String,
+    cover: String,
   },
   {
     timestamps: true,
