@@ -73,7 +73,7 @@ class UserController {
     if (Object.keys(req.files).length > 0) {
       let files: any | Express.Multer.File = req.files;
 
-      if (files[0] && files[0].fieldname === 'avatar') {
+      if (files[0].fieldname === 'avatar') {
         const { originalname: name, size, key, location: url = '' } = files[0];
 
         userAvatar = await File.create({
@@ -84,8 +84,9 @@ class UserController {
         });
       }
 
-      if (files[1] && files[1].fieldname === 'cover') {
-        const { originalname: name, size, key, location: url = '' } = files[1];
+      if (files[0].fieldname === 'cover' || files[1]?.fieldname === 'cover') {
+        const { originalname: name, size, key, location: url = '' } =
+          files[0] || files[1];
 
         userCover = await File.create({
           name,
@@ -97,10 +98,8 @@ class UserController {
     }
 
     if (name) loggedUser.name = name;
-
-    loggedUser.avatar = userAvatar.url;
-
-    loggedUser.cover = userCover.url;
+    if (userAvatar) loggedUser.avatar = userAvatar.url;
+    if (userCover) loggedUser.cover = userCover.url;
 
     await loggedUser.save();
 
